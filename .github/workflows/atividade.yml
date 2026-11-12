@@ -1,0 +1,12 @@
+name: Validação do Projeto
+
+on: push
+
+jobs:
+  validacao:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - run: echo "Repositório: ${{ github.repository }} | Usuário: ${{ github.actor }}"
+      - run: test -f README.md || (echo "Erro: README.md não encontrado" && exit 1)
+      - run: echo "Validação concluída com sucesso!"
