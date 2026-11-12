@@ -1,12 +1,32 @@
 name: Validação do Projeto
 
-on: push
+on:
+  push:
+    branches:
+      - '**'
 
 jobs:
-  validacao:
+  validar:
+    name: Validar projeto
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v5
-      - run: echo "Repositório: ${{ github.repository }} | Usuário: ${{ github.actor }}"
-      - run: test -f README.md || (echo "Erro: README.md não encontrado" && exit 1)
-      - run: echo "Validação concluída com sucesso!"
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Exibir informações da execução
+        run: |
+          echo "Repositório: ${{ github.repository }}"
+          echo "Usuário que iniciou a execução: ${{ github.actor }}"
+
+      - name: Verificar existência do README.md
+        run: |
+          if [ -f "README.md" ]; then
+            echo "✅ README.md encontrado."
+          else
+            echo "::error::❌ O arquivo README.md não foi encontrado."
+            exit 1
+          fi
+
+      - name: Validação concluída
+        run: echo "🎉 Validação do projeto concluída com sucesso!"
